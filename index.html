@@ -407,6 +407,46 @@ main .wrap{
 }
 .eggBtn:hover{ background: rgba(255,255,255,.16); }
 
+/* ------------------------------
+   Mobile overflow protection
+--------------------------------*/
+
+html, body{
+  height: 100%;
+  min-height: 100%;
+}
+
+/* Allow grid children to shrink */
+main, main .wrap, #view-main, .strategyBox, .strategyStage{
+  min-height: 0;
+}
+
+/* Prevent text from breaking layout */
+.strategyText{
+  max-width: 90%;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  text-wrap: balance;
+}
+
+/* Let footer content scroll INSIDE card if needed */
+.bottomStack{
+  max-height: 45vh;      /* footer + credits scroll if too tall */
+  overflow-y: auto;
+  padding-right: 6px;    /* room for scrollbar */
+}
+
+/* Make sure credits don’t push the card taller than viewport */
+.panelCredits{
+  flex-shrink: 0;
+}
+
+/* iOS Safari viewport bug fix */
+@supports (-webkit-touch-callout: none) {
+  body{
+    min-height: -webkit-fill-available;
+  }
+}
 
 
   </style>
@@ -531,8 +571,7 @@ main .wrap{
   <script>
     /*****************************************************************
      * IMPORTANT:
-     * Oblique Strategies text is copyrighted. This demo ships with
-     * placeholders. Replace STRATEGIES with your licensed list.
+     * Oblique Strategies text is copyrighted.
      *****************************************************************/
     const STRATEGIES = [
   "Abandon normal instruments",
