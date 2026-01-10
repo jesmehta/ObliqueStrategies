@@ -1,0 +1,714 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Oblique Strategies — Random Card</title>
+
+  <!-- Optional: nice modern font (system + Inter fallback) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;650&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg: #0b0d12;
+      --card: rgba(255,255,255,.06);
+      --card2: rgba(255,255,255,.08);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.62);
+      --muted2: rgba(255,255,255,.45);
+      --border: rgba(255,255,255,.14);
+      --shadow: 0 20px 60px rgba(0,0,0,.35);
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body{
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(1200px 900px at 15% 10%, rgba(120, 180, 255,.16), transparent 60%),
+        radial-gradient(1100px 850px at 85% 20%, rgba(255, 120, 205,.10), transparent 55%),
+        radial-gradient(900px 900px at 60% 90%, rgba(110, 255, 180,.08), transparent 55%),
+        var(--bg);
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      min-height: 100vh;
+    }
+
+    a { color: inherit; }
+    .wrap{
+      width: min(980px, 92vw);
+      margin: 0 auto;
+      padding: 18px 0;
+    }
+
+    header{
+      position: sticky;
+      top: 0;
+      backdrop-filter: blur(10px);
+      background: linear-gradient(to bottom, rgba(11,13,18,.85), rgba(11,13,18,.55));
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      z-index: 10;
+    }
+
+    .headerRow{
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand{
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      line-height: 1.1;
+    }
+
+    .brandTitle{
+      font-weight: 650;
+      letter-spacing: .2px;
+      font-size: 15px;
+      opacity: .95;
+    }
+    .brandSub{
+      font-size: 12.5px;
+      color: var(--muted);
+    }
+
+    .siteLink{
+      text-decoration: none;
+      border: 1px solid var(--border);
+      padding: 9px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      color: var(--text);
+      background: rgba(255,255,255,.04);
+      transition: transform .08s ease, background .2s ease, border-color .2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      user-select: none;
+    }
+    .siteLink:hover{ background: rgba(255,255,255,.07); border-color: rgba(255,255,255,.20); }
+    .siteLink:active{ transform: translateY(1px); }
+
+    main .wrap{
+      padding: 26px 0 18px;
+      display: grid;
+      gap: 16px;
+    }
+
+    .card{
+      background: linear-gradient(180deg, var(--card), rgba(255,255,255,.03));
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: clamp(18px, 3.5vw, 30px);
+    }
+
+    .hint{
+      color: var(--muted);
+      font-size: 13.5px;
+      line-height: 1.55;
+    }
+
+.strategyBox{
+  display: grid;
+  grid-template-rows: 1fr auto;
+  min-height: min(70vh, 520px);
+}
+
+
+
+.strategyText{
+  font-size: clamp(26px, 3.5vw, 42px);
+  line-height: 1.12;
+  letter-spacing: -0.4px;
+  font-weight: 500;
+  margin: 0;
+  max-width: 22ch;
+}
+
+
+.strategyStage{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 12px;
+}
+
+    .metaRow{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 4px;
+      color: var(--muted2);
+      font-size: 12.5px;
+    }
+
+    .pill{
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+      user-select: none;
+    }
+
+    .btnRow{
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    button{
+      font: inherit;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.05);
+      color: var(--text);
+      padding: 11px 14px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: transform .08s ease, background .2s ease, border-color .2s ease;
+      user-select: none;
+    }
+    button:hover{ background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.22); }
+    button:active{ transform: translateY(1px); }
+    button.primary{
+      background: rgba(255,255,255,.12);
+      border-color: rgba(255,255,255,.24);
+    }
+    button.primary:hover{ background: rgba(255,255,255,.16); }
+    button.danger{
+      background: rgba(255, 80, 120,.10);
+      border-color: rgba(255, 80, 120,.24);
+    }
+
+    .toast{
+      font-size: 13px;
+      color: var(--muted);
+      min-height: 18px;
+    }
+
+    /* Favourites view */
+    .favsHead{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .favsTitle{
+      margin: 0;
+      font-size: 18px;
+      font-weight: 650;
+      letter-spacing: .2px;
+    }
+    .list{
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 10px;
+    }
+    .listItem{
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      border-radius: 14px;
+      padding: 12px 14px;
+      display: grid;
+      gap: 8px;
+    }
+    .listItemText{
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.25;
+    }
+    .listItemActions{
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      justify-content: flex-end;
+    }
+    .smallBtn{
+      padding: 8px 10px;
+      border-radius: 10px;
+      font-size: 12.5px;
+      color: var(--text);
+      background: rgba(255,255,255,.05);
+    }
+
+    footer{
+      border-top: 1px solid rgba(255,255,255,.08);
+      background: rgba(11,13,18,.35);
+      backdrop-filter: blur(10px);
+    }
+    .foot{
+      display: grid;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 12.5px;
+      line-height: 1.5;
+      padding: 14px 0;
+    }
+    .credits{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .credits span{ opacity: .95; }
+    .sep{ opacity: .35; }
+    .panelFooter{
+  display: grid;
+  gap: 12px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255,255,255,.08);
+  }
+/* Give the "Oblique Strategies is a deck..." text more separation from footer controls */
+.hintTop{
+  margin-top: 14px;
+}
+
+/* Make the paragraph span the panel and breathe */
+.creditText{
+  margin: 0;
+  width: 100%;
+  max-width: none;                  /* IMPORTANT: remove any earlier max-width */
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: rgba(255,255,255,.55);
+  margin-top: 10px;
+  margin-bottom: 16px;              /* MORE vertical gap before links */
+}
+
+.panelCredits{
+  margin-top: 22px;
+  padding-top: 16px;
+  border-top: 1px dashed rgba(255,255,255,.12);
+  width: 100%;
+}
+
+/* evenly spaced links */
+.creditLinks{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  gap: 12px;
+  margin-bottom: 18px;     /* BIG gap before footnote text */
+}
+
+.creditLinks a{
+  flex: 1;
+  text-align: center;
+  font-size: 12px;
+  color: rgba(255,255,255,.7);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255,255,255,.2);
+  padding-bottom: 2px;
+}
+
+.creditLinks a:hover{
+  color: #fff;
+  border-color: rgba(255,255,255,.6);
+}
+
+/* footnote paragraph */
+.hintFoot{
+  width: 100%;
+  max-width: none;
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: rgba(255,255,255,.55);
+  margin: 0;
+}
+
+
+
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="wrap headerRow">
+      <div class="brand">
+        <div class="brandTitle">Oblique Strategies</div>
+        <div class="brandSub">A tiny prompt generator for getting unstuck.</div>
+      </div>
+
+      <!-- Change href to your website -->
+      <a class="siteLink" href="/" aria-label="Back to main website">
+        ← Main site
+      </a>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap">
+
+      <!-- MAIN VIEW -->
+      <section id="view-main" class="card" aria-live="polite">
+        <div class="strategyBox">
+<div class="strategyStage">
+  <p class="strategyText" id="strategyText">Loading…</p>
+</div>
+
+
+          <div class="panelFooter">
+
+  <div class="toast" id="toast"></div>
+
+  <div class="metaRow">
+    <div class="pill" id="counterPill">Card — / —</div>
+    <div class="pill" id="favPill">Favourites: 0</div>
+  </div>
+
+  <div class="btnRow">
+    <button class="primary" id="btnNew">Pick new</button>
+    <button id="btnFav">Mark favourite</button>
+    <button id="btnShowFavs">List of favourites</button>
+  </div>
+
+</div>
+
+<div class="panelCredits">
+
+  <div class="creditLinks">
+    <a href="https://en.wikipedia.org/wiki/Oblique_Strategies" target="_blank" rel="noopener noreferrer">
+      About Oblique Strategies
+    </a>
+    <a href="https://gammm.org/2019/02/14/from-oblique-strategies-brian-eno-peter-schmidt-1974/" target="_blank" rel="noopener noreferrer">
+      Original handwritten cards
+    </a>
+    <a href="http://music.hyperreal.org/artists/brian_eno/oblique/oblique.html" target="_blank" rel="noopener noreferrer">
+      Original web generator
+    </a>
+  </div>
+
+  <div class="hint hintFoot">
+    Oblique Strategies is a deck of creative prompts by <strong>Brian Eno</strong> and <strong>Peter Schmidt</strong>,
+    designed to help you sidestep habitual thinking and move forward with a new constraint or angle.
+    <br><br>
+    These cards evolved from Brian Eno and Peter Schmidt’s observations of the principles underlying creative work.
+    They can be used as a pack — a set of possibilities held continuously in mind — or by drawing a single card when a dilemma occurs.
+    In this case the card is trusted even if its appropriateness is unclear. The deck is not final; new ideas appear and others become self-evident.
+  </div>
+
+</div>
+
+
+      </section>
+
+      <!-- FAVOURITES VIEW -->
+      <section id="view-favs" class="card" hidden>
+        <div class="favsHead">
+          <h2 class="favsTitle">Favourites</h2>
+          <div class="btnRow">
+            <button id="btnBack">Back</button>
+            <button class="danger" id="btnClear">Clear all</button>
+          </div>
+        </div>
+
+        <ul class="list" id="favList"></ul>
+
+        <p class="hint" id="emptyFavsHint" hidden>
+          No favourites yet. Go back and mark a few prompts you want to revisit.
+        </p>
+      </section>
+
+    </div>
+  </main>
+
+  <footer>
+    <div class="wrap foot">
+      <div class="credits">
+        <span>
+          Cards: © Brian Eno &amp; Peter Schmidt (Oblique Strategies)
+        </span>
+        <span class="sep">•</span>
+        <span>
+          Webpage: © <span id="yourName">Your Name</span>
+        </span>
+      </div>
+      <div>
+        Tip: This page keeps favourites only in-memory (temporary). Refreshing will clear them.
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    /*****************************************************************
+     * IMPORTANT:
+     * Oblique Strategies text is copyrighted. This demo ships with
+     * placeholders. Replace STRATEGIES with your licensed list.
+     *****************************************************************/
+    const STRATEGIES = [
+  "Abandon normal instruments",
+  "Accept advice",
+  "Accretion",
+  "A line has two sides",
+  "Allow an easement (an easement is the abandonment of a stricture)",
+  "Are there sections? Consider transitions",
+  "Ask people to work against their better judgement",
+  "Ask your body",
+  "Assemble some of the instruments in a group and treat the group",
+  "Balance the consistency principle with the inconsistency principle",
+  "Be dirty",
+  "Breathe more deeply",
+  "Bridges — build — burn",
+  "Cascades",
+  "Change instrument roles",
+  "Change nothing and continue with immaculate consistency",
+  "Children’s voices — speaking — singing",
+  "Cluster analysis",
+  "Consider different fading systems",
+  "Consult other sources — promising — unpromising",
+  "Convert a melodic element into a rhythmic element",
+  "Courage!",
+  "Cut a vital connection",
+  "Decorate, decorate",
+  "Define an area as “safe” and use it as an anchor",
+  "Destroy — nothing — the most important thing",
+  "Discard an axiom",
+  "Disconnect from desire",
+  "Discover the recipes you are using and abandon them",
+  "Distorting time",
+  "Do nothing for as long as possible",
+  "Don’t be afraid of things because they’re easy to do",
+  "Don’t be frightened of clichés",
+  "Don’t be frightened to display your talents",
+  "Don’t break the silence",
+  "Don’t stress one thing more than another",
+  "Do something boring",
+  "Do the washing up",
+  "Do the words need changing?",
+  "Do we need holes?",
+  "Emphasize differences",
+  "Emphasize repetitions",
+  "Emphasize the flaws",
+  "Faced with a choice, do both (given by Dieter Roth)",
+  "Feedback recordings into an acoustic situation",
+  "Fill every beat with something",
+  "Get your neck massaged",
+  "Ghost echoes",
+  "Give the game away",
+  "Give way to your worst impulse",
+  "Go slowly all the way round the outside",
+  "Honor thy error as a hidden intention",
+  "How would you have done it?",
+  "Humanize something free of error",
+  "Imagine the music as a moving chain or caterpillar",
+  "Imagine the music as a set of disconnected events",
+  "Infinitesimal gradations",
+  "Intentions — credibility of — nobility of — humility of",
+  "Into the impossible",
+  "Is it finished?",
+  "Is there something missing?",
+  "Is the tuning appropriate?",
+  "Just carry on",
+  "Left channel, right channel, centre channel",
+  "Listen in total darkness, or in a very large room, very quietly",
+  "Listen to the quiet voice",
+  "Look at a very small object, look at its centre",
+  "Look at the order in which you do things",
+  "Look closely at the most embarrassing details and amplify them",
+  "Lowest common denominator check — single beat — single note — single riff",
+  "Make a blank valuable by putting it in an exquisite frame",
+  "Make an exhaustive list of everything you might do and do the last thing on the list",
+  "Make a sudden, destructive unpredictable action; incorporate",
+  "Mechanicalize something idiosyncratic",
+  "Mute and continue",
+  "Only one element of each kind",
+  "(Organic) machinery",
+  "Overtly resist change",
+  "Put in earplugs",
+  "Remember those quiet evenings",
+  "Remove ambiguities and convert to specifics",
+  "Remove specifics and convert to ambiguities",
+  "Repetition is a form of change",
+  "Reverse",
+  "Short circuit (example: a man eating peas with the idea that they will improve his virility shovels them straight into his lap)",
+  "Shut the door and listen from outside",
+  "Simple subtraction",
+  "Spectrum analysis",
+  "Take a break",
+  "Take away the elements in order of apparent non-importance",
+  "Tape your mouth (given by Ritva Saarikko)",
+  "The inconsistency principle",
+  "The tape is now the music",
+  "Think of the radio",
+  "Tidy up",
+  "Trust in the you of now",
+  "Turn it upside down",
+  "Twist the spine",
+  "Use an old idea",
+  "Use an unacceptable color",
+  "Use fewer notes",
+  "Use filters",
+  "Use “unqualified” people",
+  "Water",
+  "What are you really thinking about just now? Incorporate",
+  "What is the reality of the situation?",
+  "What mistakes did you make last time?",
+  "What would your closest friend do?",
+  "What wouldn’t you do?",
+  "Work at a different speed",
+  "You are an engineer",
+  "You can only make one dot at a time",
+  "You don’t have to be ashamed of using your own ideas",
+  "[blank white card]"
+];
+
+
+    // State
+    let currentIndex = 0;
+    let lastIndex = -1;
+    const favourites = []; // temp list (memory only)
+
+    // Elements
+    const elMain = document.getElementById("view-main");
+    const elFavs = document.getElementById("view-favs");
+    const elText = document.getElementById("strategyText");
+    const elToast = document.getElementById("toast");
+    const elCounter = document.getElementById("counterPill");
+    const elFavPill = document.getElementById("favPill");
+    const elFavList = document.getElementById("favList");
+    const elEmptyHint = document.getElementById("emptyFavsHint");
+
+    // Buttons
+    const btnNew = document.getElementById("btnNew");
+    const btnFav = document.getElementById("btnFav");
+    const btnShowFavs = document.getElementById("btnShowFavs");
+    const btnBack = document.getElementById("btnBack");
+    const btnClear = document.getElementById("btnClear");
+
+    function setToast(msg = "") {
+      elToast.textContent = msg;
+    }
+
+    function updatePills() {
+      elCounter.textContent = `Card ${currentIndex + 1} / ${STRATEGIES.length}`;
+      elFavPill.textContent = `Favourites: ${favourites.length}`;
+    }
+
+    function showStrategy(index) {
+      currentIndex = index;
+      elText.textContent = STRATEGIES[currentIndex] ?? "—";
+      updatePills();
+    }
+
+    function pickNew() {
+      setToast("");
+      if (STRATEGIES.length === 0) return;
+
+      if (STRATEGIES.length === 1) {
+        showStrategy(0);
+        return;
+      }
+
+      let next = currentIndex;
+      // Avoid immediate repeats
+      while (next === currentIndex) {
+        next = Math.floor(Math.random() * STRATEGIES.length);
+      }
+      lastIndex = currentIndex;
+      showStrategy(next);
+    }
+
+    function markFavourite() {
+      const text = STRATEGIES[currentIndex];
+      if (!text) return;
+
+      const exists = favourites.includes(text);
+      if (exists) {
+        setToast("Already in favourites.");
+        return;
+      }
+      favourites.push(text);
+      updatePills();
+      setToast("Saved to favourites.");
+    }
+
+    function renderFavourites() {
+      elFavList.innerHTML = "";
+
+      if (favourites.length === 0) {
+        elEmptyHint.hidden = false;
+        return;
+      }
+      elEmptyHint.hidden = true;
+
+      favourites.forEach((item, i) => {
+        const li = document.createElement("li");
+        li.className = "listItem";
+
+        const p = document.createElement("p");
+        p.className = "listItemText";
+        p.textContent = item;
+
+        const actions = document.createElement("div");
+        actions.className = "listItemActions";
+
+        const btnRemove = document.createElement("button");
+        btnRemove.className = "smallBtn";
+        btnRemove.textContent = "Remove";
+        btnRemove.addEventListener("click", () => {
+          favourites.splice(i, 1);
+          updatePills();
+          renderFavourites();
+        });
+
+        actions.appendChild(btnRemove);
+        li.appendChild(p);
+        li.appendChild(actions);
+
+        elFavList.appendChild(li);
+      });
+    }
+
+    function showFavView() {
+      setToast("");
+      elMain.hidden = true;
+      elFavs.hidden = false;
+      renderFavourites();
+    }
+
+    function showMainView() {
+      elFavs.hidden = true;
+      elMain.hidden = false;
+      setToast("");
+    }
+
+    function clearFavourites() {
+      favourites.length = 0;
+      updatePills();
+      renderFavourites();
+    }
+
+    // Events
+    btnNew.addEventListener("click", pickNew);
+    btnFav.addEventListener("click", markFavourite);
+    btnShowFavs.addEventListener("click", showFavView);
+    btnBack.addEventListener("click", showMainView);
+    btnClear.addEventListener("click", clearFavourites);
+
+    // Init
+    (function init() {
+      // Start with a random strategy
+      currentIndex = Math.floor(Math.random() * Math.max(1, STRATEGIES.length));
+      showStrategy(currentIndex);
+      setToast("");
+    })();
+  </script>
+</body>
+</html>
