@@ -97,11 +97,19 @@
     .siteLink:hover{ background: rgba(255,255,255,.07); border-color: rgba(255,255,255,.20); }
     .siteLink:active{ transform: translateY(1px); }
 
-    main .wrap{
-      padding: 26px 0 18px;
-      display: grid;
-      gap: 16px;
-    }
+main{
+  min-height: 0;            /* important for nested flex/grid sizing */
+}
+
+main .wrap{
+  padding: 26px 0 18px;
+  display: flex;            /* was grid */
+  flex-direction: column;
+  height: 100%;             /* KEY: fill the grid's 1fr row */
+  gap: 16px;
+  min-height: 0;
+}
+
 
     .card{
       background: linear-gradient(180deg, var(--card), rgba(255,255,255,.03));
@@ -111,16 +119,13 @@
       padding: clamp(18px, 3.5vw, 30px);
     }
 
-    .hint{
-      color: var(--muted);
-      font-size: 13.5px;
-      line-height: 1.55;
-    }
 
-.strategyBox{
-  display: grid;
-  grid-template-rows: 1fr auto;
-  min-height: min(70vh, 520px);
+#view-main,
+#view-favs{
+  flex: 1;                  /* let the card fill available space */
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
 
@@ -135,13 +140,7 @@
 }
 
 
-.strategyStage{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 12px;
-}
+
 
     .metaRow{
       display: flex;
@@ -269,12 +268,42 @@
     }
     .credits span{ opacity: .95; }
     .sep{ opacity: .35; }
-    .panelFooter{
+
+    /* Make hidden ALWAYS win (fixes favourites bleeding through) */
+[hidden]{ display:none !important; }
+
+/* Two-row layout: stage + bottom stack */
+.strategyBox{
+  display: grid;
+  grid-template-rows: 1fr auto;
+  height: 100%;
+  min-height: 0;
+}
+
+.strategyStage{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 12px;
+  min-height: 0;
+}
+
+/* Everything below the stage stays together */
+.bottomStack{
+  display: grid;
+  gap: 14px;
+}
+
+/* Optional: keep footer separated from credits neatly */
+.panelFooter{
   display: grid;
   gap: 12px;
   padding-top: 12px;
   border-top: 1px solid rgba(255,255,255,.08);
-  }
+}
+
+  
 /* Give the "Oblique Strategies is a deck..." text more separation from footer controls */
 .hintTop{
   margin-top: 14px;
@@ -358,52 +387,52 @@
 
       <!-- MAIN VIEW -->
       <section id="view-main" class="card" aria-live="polite">
+
         <div class="strategyBox">
-<div class="strategyStage">
-  <p class="strategyText" id="strategyText">Loading…</p>
-</div>
 
-
-          <div class="panelFooter">
-
-  <div class="toast" id="toast"></div>
-
-  <div class="metaRow">
-    <div class="pill" id="counterPill">Card — / —</div>
-    <div class="pill" id="favPill">Favourites: 0</div>
+  <div class="strategyStage">
+    <p class="strategyText" id="strategyText">Loading…</p>
   </div>
 
-  <div class="btnRow">
-    <button class="primary" id="btnNew">Pick new</button>
-    <button id="btnFav">Mark favourite</button>
-    <button id="btnShowFavs">List of favourites</button>
+  <div class="bottomStack">
+
+    <div class="panelFooter">
+      <div class="toast" id="toast"></div>
+
+      <div class="metaRow">
+        <div class="pill" id="counterPill">Card — / —</div>
+        <div class="pill" id="favPill">Favourites: 0</div>
+      </div>
+
+      <div class="btnRow">
+        <button class="primary" id="btnNew">Pick new</button>
+        <button id="btnFav">Mark favourite</button>
+        <button id="btnShowFavs">List of favourites</button>
+      </div>
+    </div>
+
+    <div class="panelCredits">
+      <div class="creditLinks">
+        <a href="https://en.wikipedia.org/wiki/Oblique_Strategies" target="_blank" rel="noopener noreferrer">About Oblique Strategies</a>
+        <a href="https://gammm.org/2019/02/14/from-oblique-strategies-brian-eno-peter-schmidt-1974/" target="_blank" rel="noopener noreferrer">Original handwritten cards</a>
+        <a href="http://music.hyperreal.org/artists/brian_eno/oblique/oblique.html" target="_blank" rel="noopener noreferrer">Original web generator</a>
+      </div>
+
+      <div class="hint hintFoot">
+        Oblique Strategies is a deck of creative prompts by <strong>Brian Eno</strong> and <strong>Peter Schmidt</strong>,
+        designed to help you sidestep habitual thinking and move forward with a new constraint or angle.
+        <br><br>
+        These cards evolved from Brian Eno and Peter Schmidt’s observations of the principles underlying creative work.
+        They can be used as a pack — a set of possibilities held continuously in mind — or by drawing a single card when a dilemma occurs.
+        In this case the card is trusted even if its appropriateness is unclear. The deck is not final; new ideas appear and others become self-evident.
+ <br><br>
+       
+        Tip: This page keeps favourites only in-memory (temporary). Refreshing will clear them.
+    
+      </div>
+    </div>
+
   </div>
-
-</div>
-
-<div class="panelCredits">
-
-  <div class="creditLinks">
-    <a href="https://en.wikipedia.org/wiki/Oblique_Strategies" target="_blank" rel="noopener noreferrer">
-      About Oblique Strategies
-    </a>
-    <a href="https://gammm.org/2019/02/14/from-oblique-strategies-brian-eno-peter-schmidt-1974/" target="_blank" rel="noopener noreferrer">
-      Original handwritten cards
-    </a>
-    <a href="http://music.hyperreal.org/artists/brian_eno/oblique/oblique.html" target="_blank" rel="noopener noreferrer">
-      Original web generator
-    </a>
-  </div>
-
-  <div class="hint hintFoot">
-    Oblique Strategies is a deck of creative prompts by <strong>Brian Eno</strong> and <strong>Peter Schmidt</strong>,
-    designed to help you sidestep habitual thinking and move forward with a new constraint or angle.
-    <br><br>
-    These cards evolved from Brian Eno and Peter Schmidt’s observations of the principles underlying creative work.
-    They can be used as a pack — a set of possibilities held continuously in mind — or by drawing a single card when a dilemma occurs.
-    In this case the card is trusted even if its appropriateness is unclear. The deck is not final; new ideas appear and others become self-evident.
-  </div>
-
 </div>
 
 
@@ -437,11 +466,8 @@
         </span>
         <span class="sep">•</span>
         <span>
-          Webpage: © <span id="yourName">Your Name</span>
+          Webpage: © <span id="yourName">Jesal Mehta</span>
         </span>
-      </div>
-      <div>
-        Tip: This page keeps favourites only in-memory (temporary). Refreshing will clear them.
       </div>
     </div>
   </footer>
