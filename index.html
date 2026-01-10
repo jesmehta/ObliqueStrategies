@@ -362,6 +362,51 @@ main .wrap{
   margin: 0;
 }
 
+.eggDialog{
+  border: none;
+  border-radius: 16px;
+  padding: 0;
+  background: rgba(20, 24, 34, .96);
+  color: rgba(255,255,255,.92);
+  box-shadow: 0 30px 90px rgba(0,0,0,.6);
+  max-width: min(420px, 92vw);
+}
+
+.eggDialog::backdrop{
+  background: rgba(0,0,0,.6);
+  backdrop-filter: blur(6px);
+}
+
+.eggBox{
+  padding: 18px 20px 16px;
+  display: grid;
+  gap: 12px;
+}
+
+.eggTitle{
+  font-weight: 650;
+  letter-spacing: .2px;
+}
+
+.eggMsg{
+  color: rgba(255,255,255,.7);
+  line-height: 1.45;
+}
+
+.eggActions{
+  display: flex;
+  justify-content: flex-end;
+}
+
+.eggBtn{
+  padding: 9px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.18);
+  background: rgba(255,255,255,.1);
+  color: #fff;
+}
+.eggBtn:hover{ background: rgba(255,255,255,.16); }
+
 
 
   </style>
@@ -472,13 +517,16 @@ main .wrap{
     </div>
   </footer>
 
-  <dialog id="sketchEgg" class="eggDialog">
-  <div class="eggBox">
-    <div class="eggTitle">📝 Tiny reminder</div>
-    <div class="eggMsg">You should go do your 20 sketches now.</div>
-    <button class="eggBtn" id="eggClose">OK</button>
-  </div>
+<dialog id="sketchEgg" class="eggDialog">
+  <form method="dialog" class="eggBox">
+    <div class="eggTitle">📝 Abbe, bas !</div>
+    <div class="eggMsg">Maybe should go do your 20 sketches now. Idhar bhi timepass karoge ?</div>
+    <div class="eggActions">
+      <button class="eggBtn">Haanji</button>
+    </div>
+  </form>
 </dialog>
+
 
   <script>
     /*****************************************************************
@@ -748,16 +796,14 @@ main .wrap{
 (function setupSketchEasterEgg(){
   const btn = document.getElementById("btnNew");
   const dlg = document.getElementById("sketchEgg");
-  const closeBtn = document.getElementById("eggClose");
-
-  if (!btn || !dlg || !closeBtn) return;
+  if (!btn || !dlg) return;
 
   let streak = 0;
   let resetTimer = null;
 
   function scheduleReset(){
-    if (resetTimer) clearTimeout(resetTimer);
-    resetTimer = setTimeout(() => { streak = 0; }, 12000); // pause resets streak
+    clearTimeout(resetTimer);
+    resetTimer = setTimeout(() => { streak = 0; }, 12000);
   }
 
   btn.addEventListener("click", () => {
@@ -766,12 +812,10 @@ main .wrap{
 
     if (streak >= 8) {
       streak = 0;
-      if (typeof dlg.showModal === "function") dlg.showModal();
+      if (dlg.showModal) dlg.showModal();
       else alert("You should go do your 20 sketches now.");
     }
   });
-
-  closeBtn.addEventListener("click", () => dlg.close());
 })();
 
   </script>
