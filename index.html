@@ -472,6 +472,14 @@ main .wrap{
     </div>
   </footer>
 
+  <dialog id="sketchEgg" class="eggDialog">
+  <div class="eggBox">
+    <div class="eggTitle">📝 Tiny reminder</div>
+    <div class="eggMsg">You should go do your 20 sketches now.</div>
+    <button class="eggBtn" id="eggClose">OK</button>
+  </div>
+</dialog>
+
   <script>
     /*****************************************************************
      * IMPORTANT:
@@ -735,6 +743,37 @@ main .wrap{
       showStrategy(currentIndex);
       setToast("");
     })();
+
+    // Easter egg: after 8 consecutive "Pick new" clicks
+(function setupSketchEasterEgg(){
+  const btn = document.getElementById("btnNew");
+  const dlg = document.getElementById("sketchEgg");
+  const closeBtn = document.getElementById("eggClose");
+
+  if (!btn || !dlg || !closeBtn) return;
+
+  let streak = 0;
+  let resetTimer = null;
+
+  function scheduleReset(){
+    if (resetTimer) clearTimeout(resetTimer);
+    resetTimer = setTimeout(() => { streak = 0; }, 12000); // pause resets streak
+  }
+
+  btn.addEventListener("click", () => {
+    streak += 1;
+    scheduleReset();
+
+    if (streak >= 8) {
+      streak = 0;
+      if (typeof dlg.showModal === "function") dlg.showModal();
+      else alert("You should go do your 20 sketches now.");
+    }
+  });
+
+  closeBtn.addEventListener("click", () => dlg.close());
+})();
+
   </script>
 </body>
 </html>
